@@ -23,7 +23,7 @@ along with this program. If not, see <http://www.gnu.org/licenses/>.
       { typeof opts.item === "string" ? opts.item : opts.item.repo }
       <div if="{typeof opts.item !== "string"}" class="item-count right">
         { opts.item.images && opts.item.images.length } images
-        <i class="material-icons animated {expanded: opts.expanded}">expand_more</i>
+        <i class="material-icons animated {expanded: opts.expanded}" style="position: relative; top: 8px">expand_more</i>
       </div>
     </span>
   </material-card>

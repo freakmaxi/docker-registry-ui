@@ -31,6 +31,8 @@ along with this program. If not, see <http://www.gnu.org/licenses/>.
       }
       if (this.tags['material-button']) {
         this.delete = this.tags['material-button'].root.onclick = function(ignoreError) {
+          if (!confirm("Approve Deletion!")) return;
+
           const name = self.opts.image.name;
           const tag = self.opts.image.tag;
           registryUI.taglist.go(name);

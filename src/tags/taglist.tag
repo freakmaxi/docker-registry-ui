@@ -155,6 +155,7 @@ along with this program. If not, see <http://www.gnu.org/licenses/>.
 
     registryUI.taglist.bulkDelete = function() {
       if (self.multiDelete && self.toDelete > 0) {
+        if (!confirm("Approve Deletion!")) return;
         self._getRemoveImageTags().filter(function(img) {
           return img.tags['material-checkbox'].checked;
         }).forEach(function(img) {

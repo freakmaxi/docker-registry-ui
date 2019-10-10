@@ -149,7 +149,7 @@ h2 {
 .list > span .right {
   position: absolute;
   align-self: end;
-  display: flex;
+  top: 0;
   align-items: center;
   right: 0;
 }
