@@ -33,6 +33,8 @@ registryUI.name = function() {
 };
 registryUI.pullUrl = '${PULL_URL}';
 registryUI.isImageRemoveActivated = true;
+registryUI.showContentDigest = true;
+registryUI.catalogElementsLimit = 100000;
 registryUI.catalog = {};
 registryUI.taglist = {};
 registryUI.taghistory = {};

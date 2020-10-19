@@ -11,8 +11,10 @@
 - Sébastien Huss [@sebt3](https://github.com/sebt3)
 - Vladimir Kozyrev [@fieryvova](https://github.com/fieryvova)
 - Haibo Jia [@bluethon](https://github.com/bluethon)
+- Manuel Leitold [@agrippa1994](https://github.com/agrippa1994)
+- Murad [@muradheydarov](https://github.com/muradheydarov)
 
-## Beceause committers are not the only contributors
+## Because committers are not the only contributors
 
 - Ewout Prangsma [@ewoutp](https://github.com/ewoutp)
 - [@soosap](https://github.com/soosap)
@@ -24,3 +26,9 @@
 - [@wuyue92tree](https://github.com/wuyue92tree)
 - Giovanni Toraldo [@gionn](https://github.com/gionn)
 - [@marcusblake](https://github.com/marcusblake)
+- Dario [@pidario](https://github.com/pidario)
+- Jernej K. [@Cvetk0](https://github.com/Cvetk0)
+- Cristian Posoiu [@cr1st1p](https://github.com/cr1st1p)
+- Sepp Zuther [@Herr-Sepp](https://github.com/Herr-Sepp)
+- Tomas Hulata [@tombokombo](https://github.com/tombokombo)
+- Ben Jackson [@bjj](https://github.com/bjj)

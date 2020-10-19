@@ -1,5 +1,5 @@
 ---
-title: Project Page
+title: Docker Registry User Interface
 ---
 
 # Docker Registry UI
@@ -20,7 +20,7 @@ In the **static interface**, it will connect to a single registry and will not c
 
 This web user interface uses [Riot](https://github.com/Riot/riot) the react-like user interface micro-library and [riot-mui](https://github.com/kysonic/riot-mui) components.
 
-## [Project Page](https://joxit.dev/docker-registry-ui), [Live Demo](https://joxit.dev/docker-registry-ui/demo/) [Examples](https://github.com/Joxit/docker-registry-ui/tree/master/examples)
+## [Project Page](https://joxit.dev/docker-registry-ui), [Live Demo](https://joxit.dev/docker-registry-ui/demo/), [Examples](https://github.com/Joxit/docker-registry-ui/tree/master/examples)
 
 ![preview](https://raw.github.com/Joxit/docker-registry-ui/master/docker-registry-ui.gif "Preview of Docker Registry UI")
 
@@ -46,6 +46,9 @@ This web user interface uses [Riot](https://github.com/Riot/riot) the react-like
 -   Add Title when using `REGISTRY_URL` (see [#28](https://github.com/Joxit/docker-registry-ui/issues/28)) **static interface**.
 -   Customise docker pull command on static registry UI (see [#71](https://github.com/Joxit/docker-registry-ui/issues/71)) **static interface**.
 -   Add custom header via environment variable and file via `NGINX_PROXY_HEADER_*` (see [#89](https://github.com/Joxit/docker-registry-ui/pull/89)) **static interface**
+-   Show/Hide content digest in taglist via `SHOW_CONTENT_DIGEST` (values are: [`true`, `false`], default: `true`) (see [#126](https://github.com/Joxit/docker-registry-ui/issues/126)).
+-   Limit the number of elements in the image list via `CATALOG_ELEMENTS_LIMIT` (see [#127](https://github.com/Joxit/docker-registry-ui/pull/127)).
+-   Multi arch support in history page (see [#130](https://github.com/Joxit/docker-registry-ui/issues/130) and [#134](https://github.com/Joxit/docker-registry-ui/pull/134))
 
 ## FAQ
 
@@ -61,6 +64,14 @@ This web user interface uses [Riot](https://github.com/Riot/riot) the react-like
     -   Yes you can, you must first configure your docker client. (see [#76](https://github.com/Joxit/docker-registry-ui/issues/76))
 -   What does Mixed Content error mean ?
     -   This means you are using a UI with HTTPS and your registry is using HTTP (unsecured). When you are on a HTTPS site, you can't get HTTP content. Upgrade you registry with a HTTPS connection.
+-   Why the default nginx `Host` is set to `$http_host` ?
+    -   This fixes the issue [#88](https://github.com/Joxit/docker-registry-ui/issues/88). More about this in [#113](https://github.com/Joxit/docker-registry-ui/issues/113).
+-   Why DELETE fails with 401 status code (using Basic Auth) ?
+    -   This is caused by a bug in docker registry, I suggest to have your UI on the same domain than your registry e.g. registry.example.com/ui/. (see [#104](https://github.com/Joxit/docker-registry-ui/issues/104)).
+-   Can I use the docker registry ui as a standalone application (with Electron) ?
+    -   Yes, check out the example [here](https://github.com/Joxit/docker-registry-ui/tree/master/examples/electron). (see [#129](https://github.com/Joxit/docker-registry-ui/pull/129))
+-   I deleted images through the UI, but they are still present on the server. How can I delete them?
+    - When you delete an image with the UI, only the reference is deleted and not the content. To remove dangling images, you need to run the garbage collector of the registry with the command `registry garbage-collect config.yml` or `docker exec registry registry garbage-collect config.yml`. (see [#77](https://github.com/Joxit/docker-registry-ui/issues/77) [#147](https://github.com/Joxit/docker-registry-ui/issues/147))
 
 Need more informations ? Try my [examples](https://github.com/Joxit/docker-registry-ui/tree/master/examples) or open an issue.
 
@@ -177,8 +188,11 @@ http:
   headers:
     Access-Control-Allow-Origin: ['<your docker-registry-ui url>']
     Access-Control-Allow-Credentials: [true]
+    Access-Control-Allow-Headers: ['Authorization', 'Accept']
     Access-Control-Allow-Methods: ['HEAD', 'GET', 'OPTIONS'] # Optional
 ```
+
+An alternative for CORS issues is a plugin on your browser, more info [here](https://github.com/Joxit/docker-registry-ui/issues/25#issuecomment-621104846) (thank you [xmontero](https://github.com/xmontero)).
 
 ## Using delete
 
@@ -221,7 +235,7 @@ http:
     X-Content-Type-Options: [nosniff]
     Access-Control-Allow-Origin: ['http://127.0.0.1:8001']
     Access-Control-Allow-Methods: ['HEAD', 'GET', 'OPTIONS', 'DELETE']
-    Access-Control-Allow-Headers: ['Authorization']
+    Access-Control-Allow-Headers: ['Authorization', 'Accept']
     Access-Control-Max-Age: [1728000]
     Access-Control-Allow-Credentials: [true]
     Access-Control-Expose-Headers: ['Docker-Content-Digest']
@@ -231,13 +245,19 @@ auth:
     path: /etc/docker/registry/htpasswd
 ```
 
+## Standalone Application
+If you do not want to install the docker-registry-ui on your server, you may
+check out the [Electron](examples/electron/README.md) standalone application.
+
 ## All examples
 
 - [Use docker-registry-ui as a proxy (use REGISTRY_URL)](https://github.com/Joxit/docker-registry-ui/tree/master/examples/ui-as-proxy)
 - [Use docker-registry-ui as standalone (use URL)](https://github.com/Joxit/docker-registry-ui/tree/master/examples/ui-as-standalone)
 - [Use docker-registry-ui with traefik](https://github.com/Joxit/docker-registry-ui/tree/master/examples/traefik)
-- [Use docker-registry-ui with docker registry and Amazon s3](https://github.com/Joxit/docker-registry-ui/tree/master/examples/issue-75) ([#75](https://github.com/Joxit/docker-registry-ui/issues/88))
+- [Use docker-registry-ui with docker registry and Amazon s3](https://github.com/Joxit/docker-registry-ui/tree/master/examples/issue-75) ([#75](https://github.com/Joxit/docker-registry-ui/issues/75))
 - [FIX revproxy to registry does not work when published under non-root url](https://github.com/Joxit/docker-registry-ui/tree/master/examples/issue-73) ([#73](https://github.com/Joxit/docker-registry-ui/issues/73))
 - [Use docker-registry-ui with HTTPS](https://github.com/Joxit/docker-registry-ui/tree/master/examples/issue-20) ([#20](https://github.com/Joxit/docker-registry-ui/issues/20))
 - [Unable to push image when docker-registry-ui is used as a proxy on non 80 port](https://github.com/Joxit/docker-registry-ui/tree/master/examples/issue-88) ([#88](https://github.com/Joxit/docker-registry-ui/issues/88))
 - [Add custom headers bases on environment variable and/or file when the ui is used as proxy](https://github.com/Joxit/docker-registry-ui/tree/master/examples/proxy-headers) ([#89](https://github.com/Joxit/docker-registry-ui/pull/89))
+- [UI showing same sha256 content digest for all tags + Delete is not working](https://github.com/Joxit/docker-registry-ui/tree/master/examples/issue-116) ([#116](https://github.com/Joxit/docker-registry-ui/issues/116))
+- [Electron-based Standalone Application](https://github.com/Joxit/docker-registry-ui/tree/master/examples/electron) ([#129](https://github.com/Joxit/docker-registry-ui/pull/129))
